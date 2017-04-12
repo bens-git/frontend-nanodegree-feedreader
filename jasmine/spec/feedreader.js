@@ -97,21 +97,25 @@ $(function() {
                 $('.entry').each(function(i, feed) {
                     initialFeeds[i] = feed.innerText;
                 });
+            });
 
-                // call asynchronous function
-                loadFeed('1', function() {
-                    //set up
-                    finalFeeds = [];
-                    $('.entry').each(function(i, feed) {
-                        finalFeeds[i] = feed.innerText;
-                    });
-                    done();
+            // call asynchronous function
+            loadFeed('1', function() {
+                //set up
+                finalFeeds = [];
+                $('.entry').each(function(i, feed) {
+                    finalFeeds[i] = feed.innerText;
                 });
+                done();
             });
         });
+
         it("should have different content", function() {
+            console.log(initialFeeds);
+            console.log(finalFeeds);
+
             expect(initialFeeds).not.toEqual(finalFeeds);
-       });
+        });
 
 
 
