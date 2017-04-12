@@ -77,9 +77,8 @@ $(function() {
         beforeEach(function(done) {
             loadFeed('0', done);
         });
-        it("should have at least a single .entry element within the .feed container when loadfeed is complete", function(done) {
+        it("should have at least a single .entry element within the .feed container when loadfeed is complete", function() {
             expect($('.feed').find('.entry').length).toBeGreaterThan('0');
-            done();
         });
     });
     /* This suite is all about the New Feed Selection.
@@ -90,19 +89,32 @@ $(function() {
          * Remember, loadFeed() is asynchronous.
          */
         beforeEach(function(done) {
-            loadFeed('0', done);
-        });
-        var initialFeeds = [];
-        $('.entry').each(function(i, feed) {
-            initialFeeds[i] = feed;
-        });
-        it("should have different content", function(done) {
-            var finalFeeds = [];
-            $('.entry').each(function(i, feed) {
-                finalFeeds[i] = feed;
+
+            // call asynchronous function
+            loadFeed('0', function() {
+                //set up
+                initialFeeds = [];
+                $('.entry').each(function(i, feed) {
+                    initialFeeds[i] = feed.innerText;
+                });
+
+                // call asynchronous function
+                loadFeed('1', function() {
+                    //set up
+                    finalFeeds = [];
+                    $('.entry').each(function(i, feed) {
+                        finalFeeds[i] = feed.innerText;
+                    });
+                    done();
+                });
             });
-            expect(initialFeeds).not.toEqual(finalFeeds);
-            done();
         });
+        it("should have different content", function() {
+            expect(initialFeeds).not.toEqual(finalFeeds);
+       });
+
+
+
+
     });
 }());
